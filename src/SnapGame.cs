@@ -50,7 +50,24 @@ namespace CardGames
 				}
 			}
 		}
-
+		public void Shuffle()
+		{
+			for (int i=0; i<52; i++)
+			{
+				if (_cards[i].FaceUp) _cards[i].TurnOver();
+			}
+			Random rnd = new Random();
+			
+			for(int i= 0; i<52-1; i++)
+			{
+				int rndIdx = rnd.Next(52-i);
+				
+				Card temp = _cards[i];
+				_cards[i] = _cards[i + rndIdx];
+				_cards[i + rndIdx] = temp;
+			}
+			_topCard =0;
+		}
 		/// <summary>
 		/// Draws the game to the Window.
 		/// </summary>
@@ -58,14 +75,15 @@ namespace CardGames
 		private static void DrawGame(Snap myGame)
 		{
 			SwinGame.DrawBitmap("cardsBoard.png", 0, 0);
+			SwinGame.LoadFontNamed ("GameFont", "Chunkfive.otf", 24);
 
 			// Draw the top card
 			Card top = myGame.TopCard;
 			if (top != null)
 			{
-				SwinGame.DrawText ("Top Card is " + top.ToString (), Color.RoyalBlue, 0, 20);
-				SwinGame.DrawText ("Player 1 score: " + myGame.Score(0), Color.RoyalBlue, 0, 30);
-				SwinGame.DrawText ("Player 2 score: " + myGame.Score(1), Color.RoyalBlue, 0, 40);
+				SwinGame.DrawText ("Top Card is " + top.ToString (), Color.White, "GameFont", 0, 20);
+				SwinGame.DrawText ("Player 1 score: " + myGame.Score(0), Color.White, "GameFont", 0, 30);
+				SwinGame.DrawText ("Player 2 score: " + myGame.Score(1), Color.White, "GameFont", 0, 40);
 				SwinGame.DrawCell (SwinGame.BitmapNamed ("Cards"), top.CardIndex, 521, 153);
 			}
 			else
