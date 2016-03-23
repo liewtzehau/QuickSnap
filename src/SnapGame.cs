@@ -26,8 +26,44 @@ namespace CardGames
 			{
 				myGame.Start ();
 			}
-		}
 
+			if (myGame.IsStarted)
+			{
+				if ( SwinGame.KeyTyped (KeyCode.vk_LSHIFT) &&
+					SwinGame.KeyTyped (KeyCode.vk_RSHIFT))
+				{
+					//TODO: add sound effects
+					SwinGame.LoadSoundEffectNamed ("Slap", "slap-loud.wav");
+					SwinGame.PlaySoundEffect ("Slap");
+				}
+				else if (SwinGame.KeyTyped (KeyCode.vk_LSHIFT))
+				{
+					myGame.PlayerHit (0);
+				}
+				else if (SwinGame.KeyTyped (KeyCode.vk_RSHIFT))
+				{
+					myGame.PlayerHit (1);
+				}
+			}
+		}
+		public void Shuffle()
+		{
+			for (int i=0; i<52; i++)
+			{
+				if (_cards[i].FaceUp) _cards[i].TurnOver();
+			}
+			Random rnd = new Random();
+			
+			for(int i= 0; i<52-1; i++)
+			{
+				int rndIdx = rnd.Next(52-i);
+				
+				Card temp = _cards[i];
+				_cards[i] = _cards[i + rndIdx];
+				_cards[i + rndIdx] = temp;
+			}
+			_topCard =0;
+		}
 		/// <summary>
 		/// Draws the game to the Window.
 		/// </summary>
